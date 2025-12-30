@@ -1,0 +1,26 @@
+services:
+  forgejo_runner:
+    container_name: forgejo_runner
+    image: code.forgejo.org/forgejo/runner:12
+    ports:
+      - "7080:7080"
+    expose:
+      - "7080"
+    command: "/bin/forgejo-runner --config /data/config.yml daemon"
+    restart: always
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/data
+    networks:
+      - forgejo_runner_net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:7080/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  forgejo_runner_net:
+    name: forgejo_runner_net
+    driver: bridge

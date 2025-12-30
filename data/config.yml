@@ -1,0 +1,10 @@
+runner:
+  capacity: 4
+
+cache:
+  enabled: true
+  host: forgejo_runner
+  port: 7080
+
+container:
+  network: forgejo_runner_net
